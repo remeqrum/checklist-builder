@@ -1,0 +1,71 @@
+{
+  "name": "API Testing",
+  "subsections": [
+    {
+      "name": "Status Codes",
+      "testCases": [
+        {
+          "title": "GET request returns 200 for existing resource",
+          "steps": ["Send GET request to valid endpoint with existing ID"],
+          "expectedResult": "Response status 200, body contains resource data",
+          "priority": "Critical",
+          "type": "API"
+        },
+        {
+          "title": "GET request returns 404 for non-existing resource",
+          "steps": ["Send GET request with non-existing ID"],
+          "expectedResult": "Response status 404, appropriate error message",
+          "priority": "High",
+          "type": "API"
+        },
+        {
+          "title": "POST request returns 201 on successful creation",
+          "steps": ["Send POST request with valid payload"],
+          "expectedResult": "Response status 201, created resource returned",
+          "priority": "Critical",
+          "type": "API"
+        },
+        {
+          "title": "POST request returns 400 for invalid payload",
+          "steps": ["Send POST request with missing required fields"],
+          "expectedResult": "Response status 400, validation errors in response",
+          "priority": "High",
+          "type": "API"
+        },
+        {
+          "title": "Unauthorized request returns 401",
+          "steps": ["Send request without auth token"],
+          "expectedResult": "Response status 401",
+          "priority": "Critical",
+          "type": "API"
+        }
+      ]
+    },
+    {
+      "name": "Response Schema",
+      "testCases": [
+        {
+          "title": "Response matches expected JSON schema",
+          "steps": ["Send GET request to endpoint", "Validate response body against schema"],
+          "expectedResult": "All required fields present, correct types",
+          "priority": "High",
+          "type": "API"
+        },
+        {
+          "title": "Pagination parameters work correctly",
+          "steps": ["Send GET request with page=1&limit=10", "Check response has correct count and pagination metadata"],
+          "expectedResult": "Returns correct number of items, total count, page info",
+          "priority": "Medium",
+          "type": "API"
+        },
+        {
+          "title": "Error response format is consistent",
+          "steps": ["Trigger different error scenarios", "Compare error response formats"],
+          "expectedResult": "All errors follow same structure: {error, message, statusCode}",
+          "priority": "Medium",
+          "type": "API"
+        }
+      ]
+    }
+  ]
+}

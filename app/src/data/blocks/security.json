@@ -1,0 +1,69 @@
+{
+  "name": "Security",
+  "subsections": [
+    {
+      "name": "XSS Prevention",
+      "testCases": [
+        {
+          "title": "Script tags in input fields",
+          "steps": ["Enter <script>alert('xss')</script> in text input", "Submit form", "Check if script executes"],
+          "expectedResult": "Script does not execute, input is sanitized or escaped",
+          "priority": "Critical",
+          "type": "Security"
+        },
+        {
+          "title": "Event handlers in input",
+          "steps": ["Enter <img src=x onerror=alert(1)> in input field", "Submit and view output"],
+          "expectedResult": "Event handler does not execute, HTML is escaped",
+          "priority": "Critical",
+          "type": "Security"
+        },
+        {
+          "title": "Stored XSS via user profile fields",
+          "steps": ["Set profile name to contain script tag", "View profile from another account"],
+          "expectedResult": "Script is not executed when viewing profile",
+          "priority": "Critical",
+          "type": "Security"
+        }
+      ]
+    },
+    {
+      "name": "SQL Injection",
+      "testCases": [
+        {
+          "title": "SQL injection in search field",
+          "steps": ["Enter ' OR 1=1 -- in search input", "Submit search"],
+          "expectedResult": "Query is parameterized, no data leak, normal search results or error",
+          "priority": "Critical",
+          "type": "Security"
+        },
+        {
+          "title": "SQL injection in login form",
+          "steps": ["Enter admin' -- as username", "Enter anything as password", "Try to login"],
+          "expectedResult": "Login fails normally, no unauthorized access",
+          "priority": "Critical",
+          "type": "Security"
+        }
+      ]
+    },
+    {
+      "name": "CSRF",
+      "testCases": [
+        {
+          "title": "State-changing requests require CSRF token",
+          "steps": ["Intercept POST/PUT/DELETE request", "Remove CSRF token from request", "Resend"],
+          "expectedResult": "Request is rejected with 403",
+          "priority": "High",
+          "type": "Security"
+        },
+        {
+          "title": "CSRF token is unique per session",
+          "steps": ["Get CSRF token from session A", "Try to use it in session B"],
+          "expectedResult": "Token is rejected in different session",
+          "priority": "High",
+          "type": "Security"
+        }
+      ]
+    }
+  ]
+}

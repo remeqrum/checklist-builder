@@ -1,0 +1,64 @@
+{
+  "name": "Forms Validation",
+  "subsections": [
+    {
+      "name": "Required Fields",
+      "testCases": [
+        {
+          "title": "Submit form with all required fields empty",
+          "steps": ["Open form", "Leave all required fields empty", "Click Submit"],
+          "expectedResult": "Validation errors shown for each required field",
+          "priority": "Critical",
+          "type": "Functional"
+        },
+        {
+          "title": "Required field indicators visible",
+          "steps": ["Open form", "Check that required fields are marked with asterisk or other indicator"],
+          "expectedResult": "All required fields are clearly marked",
+          "priority": "Medium",
+          "type": "UI"
+        },
+        {
+          "title": "Submit form with all fields filled correctly",
+          "steps": ["Open form", "Fill all fields with valid data", "Click Submit"],
+          "expectedResult": "Form submits successfully, success message or redirect",
+          "priority": "Critical",
+          "type": "Functional"
+        }
+      ]
+    },
+    {
+      "name": "Input Validation",
+      "testCases": [
+        {
+          "title": "Email field rejects invalid format",
+          "steps": ["Enter 'notanemail' in email field", "Submit or blur field"],
+          "expectedResult": "Validation error: invalid email format",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Phone number field format",
+          "steps": ["Enter letters in phone field", "Enter number with wrong length"],
+          "expectedResult": "Validation error shown, only valid phone format accepted",
+          "priority": "Medium",
+          "type": "Functional"
+        },
+        {
+          "title": "Max length limits respected",
+          "steps": ["Enter text exceeding max length in each text field"],
+          "expectedResult": "Input is either truncated or error message shown",
+          "priority": "Medium",
+          "type": "Functional"
+        },
+        {
+          "title": "Special characters in text fields",
+          "steps": ["Enter special chars: <script>, quotes, slashes in text fields", "Submit form"],
+          "expectedResult": "Characters are escaped or sanitized, no XSS, form handles gracefully",
+          "priority": "High",
+          "type": "Security"
+        }
+      ]
+    }
+  ]
+}

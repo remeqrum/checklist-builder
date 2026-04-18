@@ -1,0 +1,71 @@
+{
+  "name": "Search and Filters",
+  "subsections": [
+    {
+      "name": "Search",
+      "testCases": [
+        {
+          "title": "Search returns relevant results",
+          "steps": ["Enter known keyword in search", "Submit search"],
+          "expectedResult": "Results contain items matching the keyword",
+          "priority": "Critical",
+          "type": "Functional"
+        },
+        {
+          "title": "Empty search query",
+          "steps": ["Leave search field empty", "Submit search"],
+          "expectedResult": "All items shown or prompt to enter query",
+          "priority": "Medium",
+          "type": "Functional"
+        },
+        {
+          "title": "Search with no results",
+          "steps": ["Enter keyword that has no matches", "Submit search"],
+          "expectedResult": "No results found message displayed",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Search is case-insensitive",
+          "steps": ["Search for 'Apple', 'apple', 'APPLE'"],
+          "expectedResult": "Same results returned regardless of case",
+          "priority": "Medium",
+          "type": "Functional"
+        }
+      ]
+    },
+    {
+      "name": "Filters",
+      "testCases": [
+        {
+          "title": "Single filter applied correctly",
+          "steps": ["Select one filter option (e.g. category)", "Apply filter"],
+          "expectedResult": "Only items matching filter are displayed",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Multiple filters combined",
+          "steps": ["Apply two or more filters simultaneously"],
+          "expectedResult": "Results match ALL applied filters (AND logic)",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Clear all filters",
+          "steps": ["Apply several filters", "Click Clear All or Reset"],
+          "expectedResult": "All filters removed, full list displayed",
+          "priority": "Medium",
+          "type": "Functional"
+        },
+        {
+          "title": "Filter counts update correctly",
+          "steps": ["Apply filter", "Check if result count matches actual items shown"],
+          "expectedResult": "Count displayed matches number of visible items",
+          "priority": "Medium",
+          "type": "UI"
+        }
+      ]
+    }
+  ]
+}

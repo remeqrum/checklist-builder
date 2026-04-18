@@ -1,0 +1,90 @@
+{
+  "name": "Authentication",
+  "subsections": [
+    {
+      "name": "Login",
+      "testCases": [
+        {
+          "title": "Login with valid credentials",
+          "steps": ["Open login page", "Enter valid email", "Enter valid password", "Click Login"],
+          "expectedResult": "User is logged in and redirected to dashboard",
+          "priority": "Critical",
+          "type": "Functional"
+        },
+        {
+          "title": "Login with invalid password",
+          "steps": ["Open login page", "Enter valid email", "Enter wrong password", "Click Login"],
+          "expectedResult": "Error message shown, user stays on login page",
+          "priority": "Critical",
+          "type": "Functional"
+        },
+        {
+          "title": "Login with empty fields",
+          "steps": ["Open login page", "Leave email and password empty", "Click Login"],
+          "expectedResult": "Validation errors shown for both fields",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Login with unregistered email",
+          "steps": ["Open login page", "Enter email that is not registered", "Enter any password", "Click Login"],
+          "expectedResult": "Error message: account not found or invalid credentials",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Remember me checkbox",
+          "steps": ["Open login page", "Enter valid credentials", "Check Remember me", "Login", "Close browser", "Open app again"],
+          "expectedResult": "User is still logged in",
+          "priority": "Medium",
+          "type": "Functional"
+        }
+      ]
+    },
+    {
+      "name": "Registration",
+      "testCases": [
+        {
+          "title": "Register with valid data",
+          "steps": ["Open registration page", "Fill in all required fields with valid data", "Click Register"],
+          "expectedResult": "Account created successfully, confirmation email sent",
+          "priority": "Critical",
+          "type": "Functional"
+        },
+        {
+          "title": "Register with existing email",
+          "steps": ["Open registration page", "Enter email that is already registered", "Fill other fields", "Click Register"],
+          "expectedResult": "Error: email already in use",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Password strength validation",
+          "steps": ["Open registration page", "Try weak passwords: '123', 'password', 'abc'"],
+          "expectedResult": "Password strength indicator shows weak, submit is blocked or warned",
+          "priority": "Medium",
+          "type": "Functional"
+        }
+      ]
+    },
+    {
+      "name": "Password Recovery",
+      "testCases": [
+        {
+          "title": "Request password reset with valid email",
+          "steps": ["Click Forgot Password", "Enter registered email", "Submit"],
+          "expectedResult": "Reset link sent to email, success message shown",
+          "priority": "High",
+          "type": "Functional"
+        },
+        {
+          "title": "Request password reset with unregistered email",
+          "steps": ["Click Forgot Password", "Enter email not in system", "Submit"],
+          "expectedResult": "Generic message shown (no info leak about which emails exist)",
+          "priority": "Medium",
+          "type": "Security"
+        }
+      ]
+    }
+  ]
+}
