@@ -1,6 +1,6 @@
 # TestChecklist Builder
 
-> 🤖 **AI-Assisted Development** — This project was built using **vibe coding** methodology with AI pair-programming (Gemini). The architecture, specifications, code generation and debugging were done collaboratively with AI tools, demonstrating the ability to effectively use AI as a development partner.
+> 🤖 **AI-Assisted Development** — This project was built using **vibe coding** methodology with AI pair-programming (Claude Code). The architecture, specifications, code generation and debugging were done collaboratively with AI tools, demonstrating the ability to effectively use AI as a development partner.
 
 🌐 **[Live Demo](https://app-three-rosy-32.vercel.app)**
 
@@ -58,7 +58,7 @@ app/src/
 
 # TestChecklist Builder (RU)
 
-> 🤖 **AI-Assisted Development** — Проект создан с использованием методологии **vibe coding** с AI парным программированием (Gemini). Архитектура, спецификации, генерация кода и отладка выполнялись совместно с AI-инструментами, демонстрируя навык эффективной работы с AI как партнёром в разработке.
+> 🤖 **AI-Assisted Development** — Проект создан с использованием методологии **vibe coding** с AI парным программированием (Claude Code). Архитектура, спецификации, генерация кода и отладка выполнялись совместно с AI-инструментами, демонстрируя навык эффективной работы с AI как партнёром в разработке.
 
 🌐 **[Демо](https://app-three-rosy-32.vercel.app)**
 
@@ -89,7 +89,7 @@ npm run dev
 
 # TestChecklist Builder (SK)
 
-> 🤖 **AI-Assisted Development** — Projekt bol vytvorený pomocou metodológie **vibe coding** s AI párovým programovaním (Gemini). Architektúra, špecifikácie, generovanie kódu a ladenie boli realizované v spolupráci s AI nástrojmi, čo demonštruje schopnosť efektívne využívať AI ako vývojového partnera.
+> 🤖 **AI-Assisted Development** — Projekt bol vytvorený pomocou metodológie **vibe coding** s AI párovým programovaním (Claude Code). Architektúra, špecifikácie, generovanie kódu a ladenie boli realizované v spolupráci s AI nástrojmi, čo demonštruje schopnosť efektívne využívať AI ako vývojového partnera.
 
 🌐 **[Demo](https://app-three-rosy-32.vercel.app)**
 
