@@ -426,6 +426,18 @@ export const translations = {
     ru: '(копия)',
     sk: '(kópia)',
   },
+
+  // ── Theme toggle ──
+  switchToLight: {
+    en: 'Switch to light theme',
+    ru: 'Светлая тема',
+    sk: 'Svetlá téma',
+  },
+  switchToDark: {
+    en: 'Switch to dark theme',
+    ru: 'Тёмная тема',
+    sk: 'Tmavá téma',
+  },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

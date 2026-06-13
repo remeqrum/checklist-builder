@@ -65,7 +65,7 @@ export function InlineEdit({
         if (e.key === 'Escape') setEditing(false);
       }}
       onClick={(e) => e.stopPropagation()}
-      className={`bg-slate-800 border border-indigo-500 rounded px-1.5 py-0.5 text-white focus:outline-none ${inputClassName ?? ''}`}
+      className={`bg-white dark:bg-slate-800 border border-indigo-500 rounded px-1.5 py-0.5 text-slate-900 dark:text-white focus:outline-none ${inputClassName ?? ''}`}
     />
   );
 }

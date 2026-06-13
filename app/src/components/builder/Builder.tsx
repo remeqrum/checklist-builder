@@ -7,6 +7,7 @@ import { CenterPanel } from './CenterPanel';
 import { PropertiesPanel } from './PropertiesPanel';
 import { exportToExcel } from '../../utils/excelExport';
 import { LangSwitcher } from '../shared/LangSwitcher';
+import { ThemeToggle } from '../shared/ThemeToggle';
 import { InlineEdit } from '../shared/InlineEdit';
 import { useI18n, t } from '../../i18n';
 
@@ -26,17 +27,17 @@ export function Builder() {
   if (!checklist) return <Navigate to="/" replace />;
 
   return (
-    <div className="app-shell h-screen flex flex-col text-slate-200">
+    <div className="app-shell h-screen flex flex-col text-slate-800 dark:text-slate-200">
       {/* toolbar */}
-      <header className="glass flex items-center gap-3 px-4 py-2 border-b border-white/5 z-10">
+      <header className="glass flex items-center gap-3 px-4 py-2 border-b border-slate-200 dark:border-white/5 z-10">
         <button
           onClick={() => navigate('/')}
-          className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all duration-200 hover:-translate-x-0.5 active:scale-90"
+          className="p-1.5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-200 hover:-translate-x-0.5 active:scale-90"
           title={t('backToDashboard', locale)}
         >
           <ArrowLeft size={18} />
         </button>
-        <h1 className="text-sm font-medium text-white truncate">
+        <h1 className="text-sm font-medium text-slate-900 dark:text-white truncate">
           <InlineEdit
             value={checklist.name}
             onSave={(name) => updateChecklist(checklist.id, { name })}
@@ -45,10 +46,11 @@ export function Builder() {
             inputClassName="text-sm font-medium"
           />
         </h1>
-        <span className="text-xs font-medium text-indigo-300 bg-indigo-500/10 ring-1 ring-indigo-500/20 rounded-full px-2 py-0.5">
+        <span className="text-xs font-medium text-indigo-600 dark:text-indigo-300 bg-indigo-500/10 ring-1 ring-indigo-500/30 dark:ring-indigo-500/20 rounded-full px-2 py-0.5">
           v{checklist.version}
         </span>
         <div className="flex-1" />
+        <ThemeToggle />
         <LangSwitcher />
         <button
           onClick={() => exportToExcel(checklist)}

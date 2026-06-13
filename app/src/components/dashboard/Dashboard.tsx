@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useChecklistStore } from '../../store/checklistStore';
 import { Plus, Copy, Trash2, ChevronRight, Download, Upload } from 'lucide-react';
 import { LangSwitcher } from '../shared/LangSwitcher';
+import { ThemeToggle } from '../shared/ThemeToggle';
 import { exportBackup, importBackup } from '../../utils/storage';
 import { useI18n, t } from '../../i18n';
 
@@ -47,19 +48,22 @@ export function Dashboard() {
   };
 
   return (
-    <div className="app-shell min-h-screen text-slate-200">
-      <header className="glass sticky top-0 z-10 border-b border-white/5 px-6 py-4">
+    <div className="app-shell min-h-screen text-slate-800 dark:text-slate-200">
+      <header className="glass sticky top-0 z-10 border-b border-slate-200 dark:border-white/5 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-semibold bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-200 bg-clip-text text-transparent">
+          <h1 className="text-xl font-semibold bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 dark:from-indigo-300 dark:via-violet-300 dark:to-indigo-200 bg-clip-text text-transparent">
             {t('appTitle', locale)}
           </h1>
-          <LangSwitcher />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LangSwitcher />
+          </div>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-medium text-white">{t('myChecklists', locale)}</h2>
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white">{t('myChecklists', locale)}</h2>
           <div className="flex items-center gap-2">
             <input
               ref={fileInputRef}
@@ -70,7 +74,7 @@ export function Dashboard() {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 px-3 py-2 bg-slate-800/70 ring-1 ring-white/5 hover:bg-slate-700/70 hover:ring-white/10 rounded-lg text-sm text-slate-300 transition-all duration-200 active:scale-95"
+              className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800/70 ring-1 ring-slate-200 dark:ring-white/5 hover:bg-slate-200 dark:hover:bg-slate-700/70 hover:ring-slate-300 dark:hover:ring-white/10 rounded-lg text-sm text-slate-700 dark:text-slate-300 transition-all duration-200 active:scale-95"
               title={t('importBackup', locale)}
             >
               <Upload size={14} />
@@ -79,7 +83,7 @@ export function Dashboard() {
             <button
               onClick={() => exportBackup(checklists)}
               disabled={checklists.length === 0}
-              className="flex items-center gap-2 px-3 py-2 bg-slate-800/70 ring-1 ring-white/5 hover:bg-slate-700/70 hover:ring-white/10 rounded-lg text-sm text-slate-300 transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800/70 ring-1 ring-slate-200 dark:ring-white/5 hover:bg-slate-200 dark:hover:bg-slate-700/70 hover:ring-slate-300 dark:hover:ring-white/10 rounded-lg text-sm text-slate-700 dark:text-slate-300 transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
               title={t('exportBackup', locale)}
             >
               <Download size={14} />
@@ -97,10 +101,10 @@ export function Dashboard() {
 
         {checklists.length === 0 ? (
           <div className="anim-fade-up text-center py-24 text-slate-500">
-            <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 ring-1 ring-white/10 flex items-center justify-center">
-              <Plus size={24} className="text-indigo-300" />
+            <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center">
+              <Plus size={24} className="text-indigo-500 dark:text-indigo-300" />
             </div>
-            <p className="text-lg mb-2 text-slate-300">{t('noChecklistsYet', locale)}</p>
+            <p className="text-lg mb-2 text-slate-700 dark:text-slate-300">{t('noChecklistsYet', locale)}</p>
             <p className="text-sm">{t('createFirstChecklist', locale)}</p>
           </div>
         ) : (
@@ -109,14 +113,14 @@ export function Dashboard() {
               <div
                 key={cl.id}
                 style={{ animationDelay: `${Math.min(i, 10) * 55}ms` }}
-                className="anim-fade-up relative flex items-center justify-between p-4 pl-5 glass border border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-0.5 transition-all duration-300 group"
+                className="anim-fade-up relative flex items-center justify-between p-4 pl-5 glass border border-slate-200 dark:border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div
                   className="flex-1 cursor-pointer"
                   onClick={() => navigate(`/checklist/${cl.id}`)}
                 >
-                  <h3 className="font-medium text-white group-hover:text-indigo-200 transition-colors">{cl.name}</h3>
+                  <h3 className="font-medium text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-200 transition-colors">{cl.name}</h3>
                   <div className="flex gap-4 mt-1 text-xs text-slate-500">
                     <span>
                       {cl.sections.length} {pluralSections(cl.sections.length)}
@@ -140,7 +144,7 @@ export function Dashboard() {
                       e.stopPropagation();
                       duplicateChecklist(cl.id);
                     }}
-                    className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all duration-200 active:scale-90"
+                    className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-200 active:scale-90"
                     title={t('duplicate', locale)}
                   >
                     <Copy size={14} />
@@ -152,14 +156,14 @@ export function Dashboard() {
                         deleteChecklist(cl.id);
                       }
                     }}
-                    className="p-2 hover:bg-red-500/15 rounded-lg text-slate-400 hover:text-red-400 transition-all duration-200 active:scale-90"
+                    className="p-2 hover:bg-red-500/15 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 transition-all duration-200 active:scale-90"
                     title={t('delete', locale)}
                   >
                     <Trash2 size={14} />
                   </button>
                   <button
                     onClick={() => navigate(`/checklist/${cl.id}`)}
-                    className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all duration-200 group-hover:translate-x-0.5 active:scale-90"
+                    className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-200 group-hover:translate-x-0.5 active:scale-90"
                     title={t('open', locale)}
                   >
                     <ChevronRight size={14} />
