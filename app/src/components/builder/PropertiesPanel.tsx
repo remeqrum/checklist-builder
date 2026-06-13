@@ -32,7 +32,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
 
   if (!foundTc) {
     return (
-      <aside className="w-72 border-l border-slate-800 bg-slate-900/30 flex items-center justify-center">
+      <aside className="anim-slide-right w-72 border-l border-white/5 glass flex items-center justify-center">
         <p className="text-sm text-slate-600 text-center px-4">
           {t('selectTestCase', locale)}
         </p>
@@ -64,8 +64,11 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
   const types: TestType[] = ['Functional', 'UI', 'API', 'Integration', 'Smoke', 'Regression'];
 
   return (
-    <aside className="w-72 border-l border-slate-800 bg-slate-900/30 overflow-y-auto">
-      <div className="p-3 border-b border-slate-800">
+    <aside
+      key={tc.id}
+      className="anim-slide-right w-72 border-l border-white/5 glass overflow-y-auto"
+    >
+      <div className="p-3 border-b border-white/5 bg-gradient-to-r from-indigo-500/10 to-transparent">
         <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
           {t('properties', locale)}
         </h2>
@@ -79,7 +82,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             type="text"
             value={tc.title}
             onChange={(e) => update('title', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
             placeholder={t('titlePlaceholder', locale)}
           />
         </div>
@@ -91,7 +94,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             value={tc.description || ''}
             onChange={(e) => update('description', e.target.value)}
             rows={2}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
             placeholder={t('descriptionPlaceholder', locale)}
           />
         </div>
@@ -103,7 +106,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             value={tc.preconditions || ''}
             onChange={(e) => update('preconditions', e.target.value)}
             rows={2}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
             placeholder={t('preconditionsPlaceholder', locale)}
           />
         </div>
@@ -124,7 +127,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
                   newSteps[i] = e.target.value;
                   update('steps', newSteps);
                 }}
-                className="flex-1 px-2 py-1 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-indigo-500"
+                className="flex-1 px-2 py-1 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
               />
               <button
                 onClick={() => {
@@ -152,7 +155,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             value={tc.expectedResult}
             onChange={(e) => update('expectedResult', e.target.value)}
             rows={2}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
             placeholder={t('expectedResultPlaceholder', locale)}
           />
         </div>
@@ -164,7 +167,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             value={tc.actualResult || ''}
             onChange={(e) => update('actualResult', e.target.value)}
             rows={2}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
             placeholder={t('actualResultPlaceholder', locale)}
           />
         </div>
@@ -175,7 +178,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
           <select
             value={tc.priority}
             onChange={(e) => update('priority', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
           >
             {priorities.map((p) => (
               <option key={p} value={p}>
@@ -191,7 +194,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
           <select
             value={tc.severity || ''}
             onChange={(e) => update('severity', e.target.value || undefined)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
           >
             <option value="">{t('notSet', locale)}</option>
             {severities.map((s) => (
@@ -208,7 +211,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
           <select
             value={tc.status}
             onChange={(e) => update('status', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
           >
             {statuses.map((s) => (
               <option key={s} value={s}>
@@ -224,7 +227,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
           <select
             value={tc.type}
             onChange={(e) => update('type', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
           >
             {types.map((t) => (
               <option key={t} value={t}>
@@ -241,7 +244,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             type="url"
             value={tc.bugLink || ''}
             onChange={(e) => update('bugLink', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
             placeholder={t('bugLinkPlaceholder', locale)}
           />
         </div>
@@ -253,7 +256,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             type="text"
             value={tc.platforms.join(', ')}
             onChange={(e) => updateList('platforms', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
             placeholder={t('commaSeparated', locale)}
           />
         </div>
@@ -265,7 +268,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             type="text"
             value={tc.browsers.join(', ')}
             onChange={(e) => updateList('browsers', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
             placeholder={t('commaSeparated', locale)}
           />
         </div>
@@ -277,7 +280,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             type="text"
             value={tc.tags.join(', ')}
             onChange={(e) => updateList('tags', e.target.value)}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
             placeholder={t('commaSeparated', locale)}
           />
         </div>
@@ -292,7 +295,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             onChange={(e) =>
               update('estimatedTime', e.target.value === '' ? undefined : Number(e.target.value))
             }
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-200"
           />
         </div>
 
@@ -303,7 +306,7 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             value={tc.comments || ''}
             onChange={(e) => update('comments', e.target.value)}
             rows={2}
-            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full px-2 py-1.5 bg-slate-800/70 border border-slate-700/70 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
             placeholder={t('commentsPlaceholder', locale)}
           />
         </div>

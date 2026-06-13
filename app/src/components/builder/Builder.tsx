@@ -26,12 +26,12 @@ export function Builder() {
   if (!checklist) return <Navigate to="/" replace />;
 
   return (
-    <div className="h-screen flex flex-col bg-slate-950 text-slate-200">
+    <div className="app-shell h-screen flex flex-col text-slate-200">
       {/* toolbar */}
-      <header className="flex items-center gap-3 px-4 py-2 border-b border-slate-800 bg-slate-900/50">
+      <header className="glass flex items-center gap-3 px-4 py-2 border-b border-white/5 z-10">
         <button
           onClick={() => navigate('/')}
-          className="p-1.5 hover:bg-slate-800 rounded-md text-slate-400 hover:text-white transition-colors"
+          className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all duration-200 hover:-translate-x-0.5 active:scale-90"
           title={t('backToDashboard', locale)}
         >
           <ArrowLeft size={18} />
@@ -45,19 +45,23 @@ export function Builder() {
             inputClassName="text-sm font-medium"
           />
         </h1>
-        <span className="text-xs text-slate-500">v{checklist.version}</span>
+        <span className="text-xs font-medium text-indigo-300 bg-indigo-500/10 ring-1 ring-indigo-500/20 rounded-full px-2 py-0.5">
+          v{checklist.version}
+        </span>
         <div className="flex-1" />
         <LangSwitcher />
         <button
           onClick={() => exportToExcel(checklist)}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-md text-xs font-medium transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-lg text-xs font-medium text-white shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
           title={t('exportToExcel', locale)}
         >
           <Download size={13} />
           {t('exportXlsx', locale)}
         </button>
-        <span className="text-xs text-slate-500">{t('autoSaved', locale)}</span>
-        <SaveIcon size={14} className="text-slate-500" />
+        <span className="flex items-center gap-1.5 text-xs text-slate-500">
+          <SaveIcon size={14} className="text-emerald-500/70" />
+          {t('autoSaved', locale)}
+        </span>
       </header>
 
       {/* three panel layout */}

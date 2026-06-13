@@ -3,9 +3,9 @@ import type { Checklist } from '../../types/checklist';
 import { useChecklistStore } from '../../store/checklistStore';
 import {
   ChevronDown,
-  ChevronRight,
   Plus,
   Trash2,
+  FolderPlus,
 } from 'lucide-react';
 import { useI18n, t } from '../../i18n';
 import { InlineEdit } from '../shared/InlineEdit';
@@ -37,30 +37,30 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
   const priorityColor = (p: string) => {
     switch (p) {
       case 'Critical':
-        return 'bg-red-500/20 text-red-400';
+        return 'bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30';
       case 'High':
-        return 'bg-orange-500/20 text-orange-400';
+        return 'bg-orange-500/15 text-orange-300 ring-1 ring-inset ring-orange-500/30';
       case 'Medium':
-        return 'bg-yellow-500/20 text-yellow-400';
+        return 'bg-yellow-500/15 text-yellow-300 ring-1 ring-inset ring-yellow-500/30';
       case 'Low':
-        return 'bg-slate-500/20 text-slate-400';
+        return 'bg-slate-500/15 text-slate-300 ring-1 ring-inset ring-slate-500/30';
       default:
-        return 'bg-slate-500/20 text-slate-400';
+        return 'bg-slate-500/15 text-slate-300 ring-1 ring-inset ring-slate-500/30';
     }
   };
 
   const statusColor = (s: string) => {
     switch (s) {
       case 'Pass':
-        return 'bg-emerald-500/20 text-emerald-400';
+        return 'bg-emerald-500/15 text-emerald-300 ring-1 ring-inset ring-emerald-500/30';
       case 'Fail':
-        return 'bg-red-500/20 text-red-400';
+        return 'bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30';
       case 'Blocked':
-        return 'bg-orange-500/20 text-orange-400';
+        return 'bg-orange-500/15 text-orange-300 ring-1 ring-inset ring-orange-500/30';
       case 'Skipped':
-        return 'bg-slate-500/20 text-slate-400';
+        return 'bg-slate-500/15 text-slate-300 ring-1 ring-inset ring-slate-500/30';
       default:
-        return 'bg-slate-700/50 text-slate-500';
+        return 'bg-slate-700/40 text-slate-400 ring-1 ring-inset ring-slate-600/40';
     }
   };
 
@@ -72,8 +72,11 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
   if (checklist.sections.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center text-slate-500">
-        <div className="text-center">
-          <p className="mb-1">{t('noSectionsYet', locale)}</p>
+        <div className="anim-fade-up text-center">
+          <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 ring-1 ring-white/10 flex items-center justify-center">
+            <FolderPlus size={24} className="text-indigo-300" />
+          </div>
+          <p className="mb-1 text-slate-300">{t('noSectionsYet', locale)}</p>
           <p className="text-sm">{t('useSidebarHint', locale)}</p>
         </div>
       </div>
@@ -83,19 +86,22 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
   return (
     <div className="flex-1 overflow-y-auto p-4">
       <div className="max-w-3xl mx-auto space-y-3">
-        {checklist.sections.map((section) => (
-          <div key={section.id} className="border border-slate-800 rounded-lg overflow-hidden">
+        {checklist.sections.map((section, si) => (
+          <div
+            key={section.id}
+            style={{ animationDelay: `${Math.min(si, 12) * 50}ms` }}
+            className="anim-fade-up glass border border-white/5 rounded-xl overflow-hidden shadow-lg shadow-black/20 hover:border-indigo-500/30 transition-colors duration-300"
+          >
             {/* section header */}
-            <div className="flex items-center gap-2 px-3 py-2.5 bg-slate-900/60">
+            <div className="flex items-center gap-2 px-3 py-2.5 bg-gradient-to-r from-indigo-500/10 to-transparent">
               <button
                 onClick={() => toggle(section.id)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-white transition-all duration-200 active:scale-90"
               >
-                {collapsed[section.id] ? (
-                  <ChevronRight size={16} />
-                ) : (
-                  <ChevronDown size={16} />
-                )}
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-300 ${collapsed[section.id] ? '-rotate-90' : ''}`}
+                />
               </button>
               <InlineEdit
                 value={section.name}
@@ -109,7 +115,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                   const name = prompt(t('subsectionNamePrompt', locale));
                   if (name?.trim()) addSubsection(checklist.id, section.id, name.trim());
                 }}
-                className="p-1 hover:bg-slate-800 rounded text-slate-500 hover:text-white transition-colors"
+                className="p-1 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white transition-all duration-200 active:scale-90"
                 title={t('addSubsection', locale)}
               >
                 <Plus size={14} />
@@ -119,7 +125,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                   if (confirm(t('deleteSectionConfirm', locale, { name: section.name })))
                     deleteSection(checklist.id, section.id);
                 }}
-                className="p-1 hover:bg-slate-800 rounded text-slate-500 hover:text-red-400 transition-colors"
+                className="p-1 hover:bg-red-500/15 rounded-lg text-slate-500 hover:text-red-400 transition-all duration-200 active:scale-90"
                 title={t('deleteSection', locale)}
               >
                 <Trash2 size={14} />
@@ -128,23 +134,22 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
 
             {/* subsections */}
             {!collapsed[section.id] && (
-              <div className="border-t border-slate-800/50">
+              <div className="anim-fade border-t border-white/5">
                 {section.subsections.length === 0 ? (
                   <div className="px-6 py-3 text-xs text-slate-600">{t('noSubsections', locale)}</div>
                 ) : (
                   section.subsections.map((sub) => (
-                    <div key={sub.id} className="border-b border-slate-800/30 last:border-b-0">
+                    <div key={sub.id} className="border-b border-white/5 last:border-b-0">
                       {/* subsection header */}
-                      <div className="flex items-center gap-2 px-6 py-2 bg-slate-900/30">
+                      <div className="flex items-center gap-2 px-6 py-2 bg-white/[0.02]">
                         <button
                           onClick={() => toggle(sub.id)}
-                          className="text-slate-500 hover:text-white transition-colors"
+                          className="text-slate-500 hover:text-white transition-all duration-200 active:scale-90"
                         >
-                          {collapsed[sub.id] ? (
-                            <ChevronRight size={14} />
-                          ) : (
-                            <ChevronDown size={14} />
-                          )}
+                          <ChevronDown
+                            size={14}
+                            className={`transition-transform duration-300 ${collapsed[sub.id] ? '-rotate-90' : ''}`}
+                          />
                         </button>
                         <InlineEdit
                           value={sub.name}
@@ -164,7 +169,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                               title: t('newTestCase', locale),
                             })
                           }
-                          className="p-1 hover:bg-slate-800 rounded text-slate-500 hover:text-white transition-colors"
+                          className="p-1 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white transition-all duration-200 active:scale-90"
                           title={t('addTestCase', locale)}
                         >
                           <Plus size={12} />
@@ -174,7 +179,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                             if (confirm(t('deleteSubsectionConfirm', locale, { name: sub.name })))
                               deleteSubsection(checklist.id, section.id, sub.id);
                           }}
-                          className="p-1 hover:bg-slate-800 rounded text-slate-500 hover:text-red-400 transition-colors"
+                          className="p-1 hover:bg-red-500/15 rounded-lg text-slate-500 hover:text-red-400 transition-all duration-200 active:scale-90"
                           title={t('deleteSubsection', locale)}
                         >
                           <Trash2 size={12} />
@@ -188,25 +193,29 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                             <div
                               key={tc.id}
                               onClick={() => setSelectedItem(tc.id)}
-                              className={`group flex items-center gap-3 px-3 py-2 my-0.5 rounded cursor-pointer text-sm transition-colors ${
+                              style={{ animationDelay: `${Math.min(idx, 12) * 35}ms` }}
+                              className={`anim-fade-up group relative flex items-center gap-3 pl-4 pr-3 py-2 my-0.5 rounded-lg cursor-pointer text-sm transition-all duration-200 ${
                                 selectedItemId === tc.id
-                                  ? 'bg-indigo-600/20 border border-indigo-500/30'
-                                  : 'hover:bg-slate-800/50 border border-transparent'
+                                  ? 'bg-gradient-to-r from-indigo-500/25 to-violet-500/10 ring-1 ring-indigo-500/40 shadow-lg shadow-indigo-500/10'
+                                  : 'ring-1 ring-transparent hover:bg-white/[0.04] hover:translate-x-0.5'
                               }`}
                             >
-                              <span className="text-xs text-slate-600 w-12 shrink-0">
+                              {selectedItemId === tc.id && (
+                                <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+                              )}
+                              <span className="text-xs text-slate-500 w-12 shrink-0 font-mono">
                                 TC-{String(idx + 1).padStart(3, '0')}
                               </span>
                               <span className="flex-1 text-slate-300 truncate">
                                 {tc.title || t('untitled', locale)}
                               </span>
                               <span
-                                className={`text-xs px-1.5 py-0.5 rounded ${priorityColor(tc.priority)}`}
+                                className={`text-xs font-medium px-2 py-0.5 rounded-full ${priorityColor(tc.priority)}`}
                               >
                                 {tc.priority}
                               </span>
                               <span
-                                className={`text-xs px-1.5 py-0.5 rounded ${statusColor(tc.status)}`}
+                                className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor(tc.status)}`}
                               >
                                 {tc.status}
                               </span>
@@ -217,7 +226,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                                   if (confirm(t('deleteTestCaseConfirm', locale, { name })))
                                     deleteTestCase(checklist.id, section.id, sub.id, tc.id);
                                 }}
-                                className="p-1 hover:bg-slate-700 rounded text-slate-600 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                                className="p-1 hover:bg-red-500/15 rounded-lg text-slate-600 hover:text-red-400 transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
                                 title={t('deleteTestCase', locale)}
                               >
                                 <Trash2 size={12} />

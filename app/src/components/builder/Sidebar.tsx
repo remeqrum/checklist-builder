@@ -20,17 +20,17 @@ export function Sidebar({ checklistId }: SidebarProps) {
   };
 
   return (
-    <aside className="w-56 border-r border-slate-800 bg-slate-900/30 flex flex-col">
-      <div className="p-3 border-b border-slate-800">
+    <aside className="anim-slide-left w-56 border-r border-white/5 glass flex flex-col">
+      <div className="p-3 border-b border-white/5">
         <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
           {t('actions', locale)}
         </h2>
         <div className="space-y-1">
           <button
             onClick={handleAddSection}
-            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 rounded-lg transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-violet-500/10 hover:translate-x-0.5 active:scale-[0.98]"
           >
-            <FolderPlus size={14} />
+            <FolderPlus size={14} className="text-indigo-400" />
             {t('addSection', locale)}
           </button>
         </div>
@@ -41,16 +41,19 @@ export function Sidebar({ checklistId }: SidebarProps) {
           {t('blocksLibrary', locale)}
         </h2>
         <div className="space-y-1">
-          {blocks.map((block) => (
+          {blocks.map((block, i) => (
             <button
               key={block.name}
               onClick={() => addSectionFromBlock(checklistId, block.name)}
-              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors text-left"
+              style={{ animationDelay: `${i * 50}ms` }}
+              className="anim-fade-up group w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 rounded-lg transition-all duration-200 text-left hover:text-white hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-violet-500/10 hover:translate-x-0.5 active:scale-[0.98]"
               title={t('addBlockTooltip', locale, { name: block.name, count: block.caseCount })}
             >
-              <PackagePlus size={14} className="shrink-0" />
+              <PackagePlus size={14} className="shrink-0 text-slate-500 group-hover:text-indigo-400 transition-colors" />
               <span className="flex-1 truncate">{block.name}</span>
-              <span className="text-xs text-slate-600">{block.caseCount}</span>
+              <span className="text-xs font-medium text-slate-400 bg-white/5 group-hover:bg-indigo-500/20 group-hover:text-indigo-300 rounded-full px-1.5 py-0.5 transition-colors">
+                {block.caseCount}
+              </span>
             </button>
           ))}
         </div>
