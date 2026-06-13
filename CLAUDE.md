@@ -56,6 +56,8 @@ No i18n library. `app/src/i18n/translations.ts` is a flat object where each key 
 
 `app/src/utils/excelExport.ts` (ExcelJS + file-saver) builds a workbook with a Summary sheet plus one sheet per section, with color-coded priority/status cells, frozen headers, autofilters, and dropdown data validation. Column set is defined in `TEST_COLUMNS`.
 
-### Styling
+### Styling and theming
 
-Tailwind CSS v4 via the `@tailwindcss/vite` plugin — there is no `tailwind.config.js` and none should be added; `src/index.css` is just `@import "tailwindcss"`. The app uses a dark slate theme with inline utility classes throughout.
+Tailwind CSS v4 via the `@tailwindcss/vite` plugin — there is no `tailwind.config.js` and none should be added. `src/index.css` holds the `@import "tailwindcss"` plus a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *))`), keyframes/`anim-*` animation utilities, and the theme-aware `.glass`/`.app-shell` surface helpers.
+
+Light is the base; dark is layered with `dark:` and gated by a `.dark` class on `<html>`. Components are written `light-value dark:dark-value` (e.g. `text-slate-800 dark:text-slate-200`); the page/panel backgrounds come from `.glass`/`.app-shell` so most surfaces need no per-element theme classes. The current theme lives in a small Zustand store (`src/theme/useTheme.ts`, persisted under `tcb-theme`, default dark) which toggles the `.dark` class; `ThemeToggle` flips it. When adding UI, pair every hardcoded slate/white color with its `dark:` counterpart, and keep animations behind the `prefers-reduced-motion` block in `index.css`.

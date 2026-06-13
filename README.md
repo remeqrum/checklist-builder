@@ -16,6 +16,7 @@ A web tool for QA engineers to create, manage, and export test checklists to Exc
 - **Excel Export** — formatted `.xlsx` with color-coded priorities, frozen headers, autofilters, data validation
 - **Block Templates** — 5 ready-made templates (Authentication, Forms, API, Security, Search) with 40 test cases
 - **Multi-language UI** — English, Russian, Slovak with auto-detection
+- **Light & dark theme** — premium dark and clean light, toggle remembered across sessions
 - **Auto-save** — all data persisted in localStorage
 - **Backup** — export/import all checklists as JSON
 - **Tested** — Vitest unit suite + Playwright e2e smoke, running in GitHub Actions CI
@@ -84,6 +85,7 @@ app/src/
 - **Excel-экспорт** — форматированный `.xlsx` с цветовой кодировкой, замороженными заголовками, автофильтрами
 - **Библиотека блоков** — 5 шаблонов (Аутентификация, Формы, API, Безопасность, Поиск) с 40 тест-кейсами
 - **Мультиязычность** — английский, русский, словацкий с автоопределением
+- **Светлая и тёмная тема** — переключение одной кнопкой, запоминается между сессиями
 - **Автосохранение** — все данные в localStorage
 - **Бэкап** — экспорт/импорт всех чек-листов в JSON
 - **Тесты** — юнит-тесты Vitest + e2e-смоук Playwright в GitHub Actions CI
@@ -117,6 +119,7 @@ Webový nástroj pre QA inžinierov na vytváranie, správu a export testovacíc
 - **Excel export** — formátovaný `.xlsx` s farebnými prioritami, zamrznutými hlavičkami, autofiltrami
 - **Knižnica blokov** — 5 šablón (Autentifikácia, Formuláre, API, Bezpečnosť, Vyhľadávanie) so 40 testovacími prípadmi
 - **Viacjazyčné UI** — angličtina, ruština, slovenčina s automatickou detekciou
+- **Svetlá a tmavá téma** — prepínanie jedným klikom, zapamätané medzi reláciami
 - **Automatické ukladanie** — všetky dáta v localStorage
 - **Záloha** — export/import všetkých checklistov do JSON
 - **Testy** — unit testy Vitest + e2e smoke Playwright v GitHub Actions CI
