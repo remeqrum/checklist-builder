@@ -62,6 +62,11 @@ const TEST_COLUMNS: { header: string; key: keyof TestCase | 'index'; width: numb
   { header: 'Comments', key: 'comments', width: 25 },
 ];
 
+// keep letters in any script (Cyrillic, Slovak diacritics, …), drop only unsafe chars
+export function sanitizeFileName(name: string): string {
+  return name.replace(/[^\p{L}\p{N}\-_ ]/gu, '').trim() || 'checklist';
+}
+
 function addSummarySheet(wb: ExcelJS.Workbook, checklist: Checklist) {
   const ws = wb.addWorksheet('Summary');
 
@@ -243,8 +248,6 @@ export async function exportToExcel(checklist: Checklist) {
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-  // keep letters in any script (Cyrillic, Slovak diacritics, …), drop only unsafe chars
-  const safeName = checklist.name.replace(/[^\p{L}\p{N}\-_ ]/gu, '').trim() || 'checklist';
-  const fileName = `${safeName}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+  const fileName = `${sanitizeFileName(checklist.name)}_${new Date().toISOString().slice(0, 10)}.xlsx`;
   saveAs(blob, fileName);
 }

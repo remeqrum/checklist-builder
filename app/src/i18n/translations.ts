@@ -12,7 +12,7 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   sk: 'Slovenčina',
 };
 
-const translations = {
+export const translations = {
   // ── Header / App ──
   appTitle: {
     en: 'TestChecklist Builder',
