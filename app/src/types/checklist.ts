@@ -2,7 +2,8 @@ export type Priority = 'Critical' | 'High' | 'Medium' | 'Low';
 export type Severity = 'Blocker' | 'Critical' | 'Major' | 'Minor' | 'Trivial';
 export type TestType = 'Functional' | 'UI' | 'API' | 'Integration' | 'Smoke' | 'Regression';
 export type TestStatus = 'Not Run' | 'Pass' | 'Fail' | 'Blocked' | 'Skipped';
-export type ExportFormat = 'xlsx' | 'csv' | 'json';
+// only xlsx is implemented; JSON is covered by the dashboard backup feature
+export type ExportFormat = 'xlsx';
 
 export interface TestCase {
   id: string;

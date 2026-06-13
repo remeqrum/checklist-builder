@@ -48,6 +48,16 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
     });
   };
 
+  const updateList = (field: string, raw: string) => {
+    update(
+      field,
+      raw
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    );
+  };
+
   const priorities: Priority[] = ['Critical', 'High', 'Medium', 'Low'];
   const severities: Severity[] = ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial'];
   const statuses: TestStatus[] = ['Not Run', 'Pass', 'Fail', 'Blocked', 'Skipped'];
@@ -147,6 +157,18 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
           />
         </div>
 
+        {/* Actual result */}
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">{t('actualResult', locale)}</label>
+          <textarea
+            value={tc.actualResult || ''}
+            onChange={(e) => update('actualResult', e.target.value)}
+            rows={2}
+            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+            placeholder={t('actualResultPlaceholder', locale)}
+          />
+        </div>
+
         {/* Priority */}
         <div>
           <label className="block text-xs text-slate-400 mb-1">{t('priority', locale)}</label>
@@ -221,6 +243,56 @@ export function PropertiesPanel({ checklist }: PropertiesPanelProps) {
             onChange={(e) => update('bugLink', e.target.value)}
             className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
             placeholder={t('bugLinkPlaceholder', locale)}
+          />
+        </div>
+
+        {/* Platforms */}
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">{t('platforms', locale)}</label>
+          <input
+            type="text"
+            value={tc.platforms.join(', ')}
+            onChange={(e) => updateList('platforms', e.target.value)}
+            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            placeholder={t('commaSeparated', locale)}
+          />
+        </div>
+
+        {/* Browsers */}
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">{t('browsers', locale)}</label>
+          <input
+            type="text"
+            value={tc.browsers.join(', ')}
+            onChange={(e) => updateList('browsers', e.target.value)}
+            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            placeholder={t('commaSeparated', locale)}
+          />
+        </div>
+
+        {/* Tags */}
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">{t('tags', locale)}</label>
+          <input
+            type="text"
+            value={tc.tags.join(', ')}
+            onChange={(e) => updateList('tags', e.target.value)}
+            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+            placeholder={t('commaSeparated', locale)}
+          />
+        </div>
+
+        {/* Estimated time */}
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">{t('estimatedTime', locale)}</label>
+          <input
+            type="number"
+            min={0}
+            value={tc.estimatedTime ?? ''}
+            onChange={(e) =>
+              update('estimatedTime', e.target.value === '' ? undefined : Number(e.target.value))
+            }
+            className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
           />
         </div>
 

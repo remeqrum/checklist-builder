@@ -364,6 +364,41 @@ export const translations = {
     ru: 'Не указано',
     sk: 'Nenastavené',
   },
+  actualResult: {
+    en: 'Actual Result',
+    ru: 'Фактический результат',
+    sk: 'Skutočný výsledok',
+  },
+  actualResultPlaceholder: {
+    en: 'What actually happened',
+    ru: 'Что произошло на самом деле',
+    sk: 'Čo sa skutočne stalo',
+  },
+  platforms: {
+    en: 'Platforms',
+    ru: 'Платформы',
+    sk: 'Platformy',
+  },
+  browsers: {
+    en: 'Browsers',
+    ru: 'Браузеры',
+    sk: 'Prehliadače',
+  },
+  tags: {
+    en: 'Tags',
+    ru: 'Теги',
+    sk: 'Tagy',
+  },
+  commaSeparated: {
+    en: 'Comma-separated',
+    ru: 'Через запятую',
+    sk: 'Oddelené čiarkou',
+  },
+  estimatedTime: {
+    en: 'Est. Time (min)',
+    ru: 'Оценка времени (мин)',
+    sk: 'Odhad času (min)',
+  },
 
   // ── Default entity names (stored at creation time) ──
   newSection: {
