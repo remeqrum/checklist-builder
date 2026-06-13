@@ -21,17 +21,10 @@ jobs:
           cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
-        run: |
-          for attempt in 1 2 3; do
-            npm ci && exit 0
-            echo "npm ci failed (attempt $attempt of 3); retrying in 15s..."
-            sleep 15
-          done
-          echo "npm ci failed after 3 attempts"; exit 1
-        env:
-          npm_config_fetch_retries: "5"
-          npm_config_fetch_retry_mintimeout: "20000"
-          npm_config_fetch_retry_maxtimeout: "120000"
+        # npm ci fails on the Linux runner with the rolldown/oxide RC native
+        # packages (passes on Windows); npm install resolves platform deps at
+        # install time, which is the reliable cross-platform path here.
+        run: npm install --no-audit --no-fund
 
       - name: Lint
         run: npm run lint
