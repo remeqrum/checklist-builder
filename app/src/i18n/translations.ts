@@ -66,6 +66,31 @@ const translations = {
     ru: 'Обновлён',
     sk: 'Aktualizovaný',
   },
+  exportBackup: {
+    en: 'Export backup',
+    ru: 'Экспорт бэкапа',
+    sk: 'Exportovať zálohu',
+  },
+  importBackup: {
+    en: 'Import backup',
+    ru: 'Импорт бэкапа',
+    sk: 'Importovať zálohu',
+  },
+  importConfirm: {
+    en: 'Importing will replace your current checklists ({count}). Continue?',
+    ru: 'Импорт заменит текущие чек-листы ({count}). Продолжить?',
+    sk: 'Import nahradí aktuálne checklisty ({count}). Pokračovať?',
+  },
+  importSuccess: {
+    en: 'Imported {count} checklist(s)',
+    ru: 'Импортировано чек-листов: {count}',
+    sk: 'Importovaných checklistov: {count}',
+  },
+  importInvalid: {
+    en: 'Invalid backup file',
+    ru: 'Некорректный файл бэкапа',
+    sk: 'Neplatný súbor zálohy',
+  },
   duplicate: {
     en: 'Duplicate',
     ru: 'Дублировать',

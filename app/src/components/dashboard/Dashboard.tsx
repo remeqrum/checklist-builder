@@ -1,20 +1,43 @@
+import { useRef } from 'react';
+import type { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChecklistStore } from '../../store/checklistStore';
-import { Plus, Copy, Trash2, ChevronRight } from 'lucide-react';
+import { Plus, Copy, Trash2, ChevronRight, Download, Upload } from 'lucide-react';
 import { LangSwitcher } from '../shared/LangSwitcher';
+import { exportBackup, importBackup } from '../../utils/storage';
 import { useI18n, t } from '../../i18n';
 
 export function Dashboard() {
-  const { checklists, addChecklist, duplicateChecklist, deleteChecklist } =
+  const { checklists, addChecklist, duplicateChecklist, deleteChecklist, importChecklists } =
     useChecklistStore();
   const { locale } = useI18n();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCreate = () => {
     const name = prompt(t('checklistNamePrompt', locale));
     if (name?.trim()) {
       const id = addChecklist(name.trim());
       navigate(`/checklist/${id}`);
+    }
+  };
+
+  const handleImportFile = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow picking the same file again
+    if (!file) return;
+    try {
+      const imported = await importBackup(file);
+      if (
+        checklists.length > 0 &&
+        !confirm(t('importConfirm', locale, { count: checklists.length }))
+      ) {
+        return;
+      }
+      importChecklists(imported);
+      alert(t('importSuccess', locale, { count: imported.length }));
+    } catch {
+      alert(t('importInvalid', locale));
     }
   };
 
@@ -35,13 +58,39 @@ export function Dashboard() {
       <main className="max-w-5xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-medium text-white">{t('myChecklists', locale)}</h2>
-          <button
-            onClick={handleCreate}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium transition-colors"
-          >
-            <Plus size={16} />
-            {t('createNew', locale)}
-          </button>
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/json,.json"
+              onChange={handleImportFile}
+              className="hidden"
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm text-slate-300 transition-colors"
+              title={t('importBackup', locale)}
+            >
+              <Upload size={14} />
+              {t('importBackup', locale)}
+            </button>
+            <button
+              onClick={() => exportBackup(checklists)}
+              disabled={checklists.length === 0}
+              className="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm text-slate-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              title={t('exportBackup', locale)}
+            >
+              <Download size={14} />
+              {t('exportBackup', locale)}
+            </button>
+            <button
+              onClick={handleCreate}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium transition-colors"
+            >
+              <Plus size={16} />
+              {t('createNew', locale)}
+            </button>
+          </div>
         </div>
 
         {checklists.length === 0 ? (

@@ -33,13 +33,25 @@ export function exportBackup(checklists: Checklist[]): void {
   URL.revokeObjectURL(url);
 }
 
+function isChecklistLike(value: unknown): value is Checklist {
+  if (typeof value !== 'object' || value === null) return false;
+  const cl = value as Record<string, unknown>;
+  return (
+    typeof cl.id === 'string' &&
+    typeof cl.name === 'string' &&
+    Array.isArray(cl.sections) &&
+    typeof cl.settings === 'object' &&
+    cl.settings !== null
+  );
+}
+
 export function importBackup(file: File): Promise<Checklist[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
       try {
         const data = JSON.parse(reader.result as string);
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.every(isChecklistLike)) {
           resolve(data as Checklist[]);
         } else {
           reject(new Error('Invalid backup format'));

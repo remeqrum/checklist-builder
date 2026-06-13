@@ -25,6 +25,7 @@ interface ChecklistStore {
 
   // checklist CRUD
   loadFromStorage: () => void;
+  importChecklists: (checklists: Checklist[]) => void;
   addChecklist: (name: string) => string;
   duplicateChecklist: (id: string) => void;
   deleteChecklist: (id: string) => void;
@@ -93,6 +94,11 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
   loadFromStorage: () => {
     const checklists = loadChecklists();
     set({ checklists });
+  },
+
+  importChecklists: (checklists: Checklist[]) => {
+    saveChecklists(checklists);
+    set({ checklists, selectedItemId: null });
   },
 
   addChecklist: (name: string) => {
