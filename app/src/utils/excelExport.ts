@@ -1,4 +1,4 @@
-import ExcelJS from 'exceljs';
+import type ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import type { Checklist, TestCase } from '../types/checklist';
 
@@ -217,7 +217,9 @@ function addSectionSheet(
 }
 
 export async function exportToExcel(checklist: Checklist) {
-  const wb = new ExcelJS.Workbook();
+  // load the heavy ExcelJS bundle only when the user actually exports
+  const { default: ExcelJSRuntime } = await import('exceljs');
+  const wb = new ExcelJSRuntime.Workbook();
   wb.creator = checklist.author || 'TestChecklist Builder';
   wb.created = new Date();
 
