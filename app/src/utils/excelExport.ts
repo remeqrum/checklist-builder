@@ -67,6 +67,13 @@ export function sanitizeFileName(name: string): string {
   return name.replace(/[^\p{L}\p{N}\-_ ]/gu, '').trim() || 'checklist';
 }
 
+// Prevent spreadsheet formula injection: Excel/LibreOffice interpret a cell
+// whose text starts with = + - @ (or a control char) as a formula. Prefix such
+// values with a quote so they are always rendered as literal text.
+export function safeCell(value: string): string {
+  return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+}
+
 function addSummarySheet(wb: ExcelJS.Workbook, checklist: Checklist) {
   const ws = wb.addWorksheet('Summary');
 
@@ -88,9 +95,9 @@ function addSummarySheet(wb: ExcelJS.Workbook, checklist: Checklist) {
   );
 
   const rows = [
-    ['Project', checklist.name],
-    ['Description', checklist.description || ''],
-    ['Author', checklist.author],
+    ['Project', safeCell(checklist.name)],
+    ['Description', safeCell(checklist.description || '')],
+    ['Author', safeCell(checklist.author)],
     ['Created', checklist.createdAt],
     ['Updated', checklist.updatedAt],
     ['Version', checklist.version],
@@ -143,22 +150,22 @@ function addSectionSheet(
   testCases.forEach(({ tc, idx }) => {
     const row = ws.addRow({
       index: `TC-${String(idx).padStart(3, '0')}`,
-      title: tc.title,
-      description: tc.description || '',
-      preconditions: tc.preconditions || '',
-      steps: tc.steps.join('\n'),
-      expectedResult: tc.expectedResult,
-      actualResult: tc.actualResult || '',
+      title: safeCell(tc.title),
+      description: safeCell(tc.description || ''),
+      preconditions: safeCell(tc.preconditions || ''),
+      steps: safeCell(tc.steps.join('\n')),
+      expectedResult: safeCell(tc.expectedResult),
+      actualResult: safeCell(tc.actualResult || ''),
       priority: tc.priority,
       severity: tc.severity || '',
       type: tc.type,
       status: tc.status,
-      platforms: tc.platforms.join(', '),
-      browsers: tc.browsers.join(', '),
-      tags: tc.tags.join(', '),
-      bugLink: tc.bugLink || '',
+      platforms: safeCell(tc.platforms.join(', ')),
+      browsers: safeCell(tc.browsers.join(', ')),
+      tags: safeCell(tc.tags.join(', ')),
+      bugLink: safeCell(tc.bugLink || ''),
       estimatedTime: tc.estimatedTime || '',
-      comments: tc.comments || '',
+      comments: safeCell(tc.comments || ''),
     });
 
     row.eachCell((cell) => {
