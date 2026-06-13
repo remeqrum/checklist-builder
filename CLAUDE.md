@@ -24,7 +24,7 @@ npm run test:e2e   # Playwright smoke tests in e2e/ (starts the dev server itsel
 
 Run a single unit test file with `npx vitest run src/utils/__tests__/storage.test.ts`, a single e2e test with `npx playwright test -g "test name"`.
 
-Unit-test gotcha: Node ≥ 22 ships an experimental global `localStorage` stub that shadows jsdom's implementation, so `src/test/setup.ts` replaces it with an in-memory `Storage` — don't remove that setup file. CI (`.github/workflows/ci.yml` at the repo root) runs lint, build, unit and e2e on every push.
+Unit-test gotcha: Node ≥ 22 ships an experimental global `localStorage` stub that shadows jsdom's implementation, so `src/test/setup.ts` replaces it with an in-memory `Storage` — don't remove that setup file. CI (`.github/workflows/ci.yml` at the repo root) runs lint, build, unit and e2e on every push and installs with `npm install`, **not** `npm ci` — see Deployment for the reason.
 
 ## Architecture
 
@@ -44,6 +44,8 @@ New entities must be created via the factories in `app/src/utils/factories.ts` (
 
 Selection (`selectedItemId`) is a bare test-case ID with no path; `PropertiesPanel` resolves it by searching the whole tree.
 
+`utils/storage.ts` also exposes `exportBackup`/`importBackup` (used by the Dashboard) for JSON download/upload of all checklists; `importBackup` validates every item is checklist-shaped before the store replaces state, so localStorage data survives a cache clear.
+
 ### Block templates are a static registry
 
 Templates live as JSON in `app/src/data/blocks/*.json` and are statically imported into the `blocks` array in `app/src/utils/blocks.ts`. Adding a template requires: new JSON file (shape: `{ name, subsections: [{ name, testCases: [{ title, steps, expectedResult, priority, type }] }] }`) + import + array entry. `blockToSection()` converts a template into real entities through the factories.
@@ -54,10 +56,18 @@ No i18n library. `app/src/i18n/translations.ts` is a flat object where each key 
 
 ### Excel export
 
-`app/src/utils/excelExport.ts` (ExcelJS + file-saver) builds a workbook with a Summary sheet plus one sheet per section, with color-coded priority/status cells, frozen headers, autofilters, and dropdown data validation. Column set is defined in `TEST_COLUMNS`.
+`app/src/utils/excelExport.ts` (ExcelJS + file-saver) builds a workbook with a Summary sheet plus one sheet per section, with color-coded priority/status cells, frozen headers, autofilters, and dropdown data validation. Column set is defined in `TEST_COLUMNS`. ExcelJS is loaded with a dynamic `import()` inside `exportToExcel` so it stays out of the initial bundle. All user-controlled text is passed through `safeCell()` to defuse spreadsheet formula injection (values starting with `= + - @` get a leading quote) — wrap any new exported text field the same way.
 
 ### Styling and theming
 
 Tailwind CSS v4 via the `@tailwindcss/vite` plugin — there is no `tailwind.config.js` and none should be added. `src/index.css` holds the `@import "tailwindcss"` plus a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *))`), keyframes/`anim-*` animation utilities, and the theme-aware `.glass`/`.app-shell` surface helpers.
 
 Light is the base; dark is layered with `dark:` and gated by a `.dark` class on `<html>`. Components are written `light-value dark:dark-value` (e.g. `text-slate-800 dark:text-slate-200`); the page/panel backgrounds come from `.glass`/`.app-shell` so most surfaces need no per-element theme classes. The current theme lives in a small Zustand store (`src/theme/useTheme.ts`, persisted under `tcb-theme`, default dark) which toggles the `.dark` class; `ThemeToggle` flips it. When adding UI, pair every hardcoded slate/white color with its `dark:` counterpart, and keep animations behind the `prefers-reduced-motion` block in `index.css`.
+
+### Deployment
+
+Deployed on Vercel from the `master` branch (the repo's default branch). Two settings are non-obvious and must stay as-is:
+- **Root Directory = `app`** (set in the Vercel dashboard) — the repo root has no `package.json`, so an empty root directory makes the build (and `app/vercel.json`) invisible to Vercel.
+- `app/vercel.json` pins `installCommand: "npm install"` alongside the SPA rewrite.
+
+Both Vercel and GitHub Actions install with **`npm install`, not `npm ci`**. The bleeding-edge rolldown release-candidate native packages (pulled in by Vite 8) make `npm ci` fail its platform-sync check on Linux runners even though it succeeds on Windows; `npm install` resolves platform deps at install time. Don't switch CI or Vercel back to `npm ci` until those dependencies stabilise.
