@@ -1,5 +1,7 @@
 # TestChecklist Builder
 
+[![CI](https://github.com/remeqrum/checklist-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/remeqrum/checklist-builder/actions/workflows/ci.yml)
+
 > 🤖 **AI-Assisted Development** — This project was built using **vibe coding** methodology with AI pair-programming (Claude Code). The architecture, specifications, code generation and debugging were done collaboratively with AI tools, demonstrating the ability to effectively use AI as a development partner.
 
 🌐 **[Live Demo](https://app-three-rosy-32.vercel.app)**
@@ -15,6 +17,8 @@ A web tool for QA engineers to create, manage, and export test checklists to Exc
 - **Block Templates** — 5 ready-made templates (Authentication, Forms, API, Security, Search) with 40 test cases
 - **Multi-language UI** — English, Russian, Slovak with auto-detection
 - **Auto-save** — all data persisted in localStorage
+- **Backup** — export/import all checklists as JSON
+- **Tested** — Vitest unit suite + Playwright e2e smoke, running in GitHub Actions CI
 
 ## 🛠 Tech Stack
 
@@ -24,8 +28,11 @@ A web tool for QA engineers to create, manage, and export test checklists to Exc
 | Build | Vite 8 |
 | Styling | Tailwind CSS v4 |
 | State | Zustand |
+| Routing | React Router |
 | Export | ExcelJS + FileSaver |
 | Icons | Lucide React |
+| Tests | Vitest + Playwright |
+| CI | GitHub Actions |
 | Deploy | Vercel |
 
 ## 🚀 Quick Start
@@ -38,6 +45,11 @@ npm run dev
 ```
 
 Dev server will start at http://localhost:5173
+
+```bash
+npm test          # unit tests (Vitest)
+npm run test:e2e  # e2e smoke tests (Playwright)
+```
 
 ## 📁 Project Structure
 
@@ -73,6 +85,8 @@ app/src/
 - **Библиотека блоков** — 5 шаблонов (Аутентификация, Формы, API, Безопасность, Поиск) с 40 тест-кейсами
 - **Мультиязычность** — английский, русский, словацкий с автоопределением
 - **Автосохранение** — все данные в localStorage
+- **Бэкап** — экспорт/импорт всех чек-листов в JSON
+- **Тесты** — юнит-тесты Vitest + e2e-смоук Playwright в GitHub Actions CI
 
 ## 🚀 Быстрый старт
 
@@ -104,6 +118,8 @@ Webový nástroj pre QA inžinierov na vytváranie, správu a export testovacíc
 - **Knižnica blokov** — 5 šablón (Autentifikácia, Formuláre, API, Bezpečnosť, Vyhľadávanie) so 40 testovacími prípadmi
 - **Viacjazyčné UI** — angličtina, ruština, slovenčina s automatickou detekciou
 - **Automatické ukladanie** — všetky dáta v localStorage
+- **Záloha** — export/import všetkých checklistov do JSON
+- **Testy** — unit testy Vitest + e2e smoke Playwright v GitHub Actions CI
 
 ## 🚀 Rýchly štart
 

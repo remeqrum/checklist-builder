@@ -13,19 +13,24 @@ All commands run from the `app/` directory (the repo root has no package.json):
 ```bash
 cd app
 npm install
-npm run dev      # Vite dev server at http://localhost:5173
-npm run build    # tsc -b && vite build — type errors fail the build
-npm run lint     # ESLint (flat config: typescript-eslint + react-hooks + react-refresh)
-npm run preview  # preview the production build
+npm run dev        # Vite dev server at http://localhost:5173
+npm run build      # tsc -b && vite build — type errors fail the build
+npm run lint       # ESLint (flat config: typescript-eslint + react-hooks + react-refresh)
+npm run preview    # preview the production build
+npm test           # Vitest unit tests (src/**/*.test.ts, jsdom environment)
+npm run test:watch # Vitest in watch mode
+npm run test:e2e   # Playwright smoke tests in e2e/ (starts the dev server itself)
 ```
 
-There is no test framework installed and no tests.
+Run a single unit test file with `npx vitest run src/utils/__tests__/storage.test.ts`, a single e2e test with `npx playwright test -g "test name"`.
+
+Unit-test gotcha: Node ≥ 22 ships an experimental global `localStorage` stub that shadows jsdom's implementation, so `src/test/setup.ts` replaces it with an in-memory `Storage` — don't remove that setup file. CI (`.github/workflows/ci.yml` at the repo root) runs lint, build, unit and e2e on every push.
 
 ## Architecture
 
-### Navigation is state-based, not URL-based
+### Routing
 
-There is no router in use (`react-router-dom` is in package.json but unused). `App.tsx` renders `Builder` when `activeChecklistId` is set in the store, otherwise `Dashboard`. "Navigation" means calling `setActiveChecklist(id | null)`.
+Two routes via react-router: `/` (Dashboard) and `/checklist/:id` (Builder); unknown paths and unknown checklist ids redirect to `/`. The store loads checklists from localStorage synchronously at creation time, so route components can rely on data being present on the first render — don't reintroduce async loading there. `app/vercel.json` contains the SPA rewrite that keeps deep links working in production.
 
 ### Data model: fixed 3-level hierarchy
 
@@ -35,7 +40,7 @@ New entities must be created via the factories in `app/src/utils/factories.ts` (
 
 ### Single Zustand store with write-through persistence
 
-`app/src/store/checklistStore.ts` holds all checklists plus UI state (`activeChecklistId`, `selectedItemId`). Every mutation goes through the `updateAndSave()` helper, which immutably maps the checklist tree, bumps `updatedAt`, and synchronously persists the entire array to localStorage (`tcb_checklists` key, via `utils/storage.ts`). There is no explicit save action — any new mutation must follow the same pattern or data will be lost on reload.
+`app/src/store/checklistStore.ts` holds all checklists plus UI selection state (`selectedItemId`). Every mutation goes through the `updateAndSave()` helper, which immutably maps the checklist tree, bumps `updatedAt`, and synchronously persists the entire array to localStorage (`tcb_checklists` key, via `utils/storage.ts`). There is no explicit save action — any new mutation must follow the same pattern or data will be lost on reload.
 
 Selection (`selectedItemId`) is a bare test-case ID with no path; `PropertiesPanel` resolves it by searching the whole tree.
 
