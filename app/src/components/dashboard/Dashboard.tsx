@@ -1,17 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import { useChecklistStore } from '../../store/checklistStore';
 import { Plus, Copy, Trash2, ChevronRight } from 'lucide-react';
 import { LangSwitcher } from '../shared/LangSwitcher';
 import { useI18n, t } from '../../i18n';
 
 export function Dashboard() {
-  const { checklists, addChecklist, duplicateChecklist, deleteChecklist, setActiveChecklist } =
+  const { checklists, addChecklist, duplicateChecklist, deleteChecklist } =
     useChecklistStore();
   const { locale } = useI18n();
+  const navigate = useNavigate();
 
   const handleCreate = () => {
     const name = prompt(t('checklistNamePrompt', locale));
     if (name?.trim()) {
-      addChecklist(name.trim());
+      const id = addChecklist(name.trim());
+      navigate(`/checklist/${id}`);
     }
   };
 
@@ -55,7 +58,7 @@ export function Dashboard() {
               >
                 <div
                   className="flex-1 cursor-pointer"
-                  onClick={() => setActiveChecklist(cl.id)}
+                  onClick={() => navigate(`/checklist/${cl.id}`)}
                 >
                   <h3 className="font-medium text-white">{cl.name}</h3>
                   <div className="flex gap-4 mt-1 text-xs text-slate-500">
@@ -99,7 +102,7 @@ export function Dashboard() {
                     <Trash2 size={14} />
                   </button>
                   <button
-                    onClick={() => setActiveChecklist(cl.id)}
+                    onClick={() => navigate(`/checklist/${cl.id}`)}
                     className="p-2 hover:bg-slate-800 rounded-md text-slate-400 hover:text-white transition-colors"
                     title={t('open', locale)}
                   >

@@ -21,19 +21,14 @@ const tr = (key: TranslationKey) => t(key, useI18n.getState().locale);
 
 interface ChecklistStore {
   checklists: Checklist[];
-  activeChecklistId: string | null;
   selectedItemId: string | null;
-
-  // computed
-  activeChecklist: () => Checklist | undefined;
 
   // checklist CRUD
   loadFromStorage: () => void;
-  addChecklist: (name: string) => void;
+  addChecklist: (name: string) => string;
   duplicateChecklist: (id: string) => void;
   deleteChecklist: (id: string) => void;
   updateChecklist: (id: string, updates: Partial<Checklist>) => void;
-  setActiveChecklist: (id: string | null) => void;
 
   // section operations
   addSection: (checklistId: string, name?: string) => void;
@@ -91,14 +86,9 @@ function updateAndSave(
 }
 
 export const useChecklistStore = create<ChecklistStore>((set, get) => ({
-  checklists: [],
-  activeChecklistId: null,
+  // localStorage is synchronous, so routes can rely on data from the first render
+  checklists: loadChecklists(),
   selectedItemId: null,
-
-  activeChecklist: () => {
-    const { checklists, activeChecklistId } = get();
-    return checklists.find((cl) => cl.id === activeChecklistId);
-  },
 
   loadFromStorage: () => {
     const checklists = loadChecklists();
@@ -109,7 +99,8 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
     const newChecklist = createChecklist({ name });
     const updated = [...get().checklists, newChecklist];
     saveChecklists(updated);
-    set({ checklists: updated, activeChecklistId: newChecklist.id });
+    set({ checklists: updated });
+    return newChecklist.id;
   },
 
   duplicateChecklist: (id: string) => {
@@ -130,19 +121,12 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
   deleteChecklist: (id: string) => {
     const updated = get().checklists.filter((cl) => cl.id !== id);
     saveChecklists(updated);
-    set({
-      checklists: updated,
-      activeChecklistId: get().activeChecklistId === id ? null : get().activeChecklistId,
-    });
+    set({ checklists: updated });
   },
 
   updateChecklist: (id: string, updates: Partial<Checklist>) => {
     const updated = updateAndSave(get().checklists, id, (cl) => ({ ...cl, ...updates }));
     set({ checklists: updated });
-  },
-
-  setActiveChecklist: (id: string | null) => {
-    set({ activeChecklistId: id, selectedItemId: null });
   },
 
   // sections

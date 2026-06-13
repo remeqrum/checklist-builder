@@ -212,6 +212,26 @@ const translations = {
     ru: 'Без названия',
     sk: 'Bez názvu',
   },
+  deleteTestCase: {
+    en: 'Delete test case',
+    ru: 'Удалить тест-кейс',
+    sk: 'Vymazať testovací prípad',
+  },
+  deleteTestCaseConfirm: {
+    en: 'Delete test case "{name}"?',
+    ru: 'Удалить тест-кейс "{name}"?',
+    sk: 'Vymazať testovací prípad "{name}"?',
+  },
+  clickToRename: {
+    en: 'Click to rename',
+    ru: 'Нажмите, чтобы переименовать',
+    sk: 'Kliknite pre premenovanie',
+  },
+  dblClickToRename: {
+    en: 'Double-click to rename',
+    ru: 'Двойной клик — переименовать',
+    sk: 'Dvojklik pre premenovanie',
+  },
 
   // ── Properties panel ──
   properties: {

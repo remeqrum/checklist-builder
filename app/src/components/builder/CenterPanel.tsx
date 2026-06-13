@@ -6,9 +6,9 @@ import {
   ChevronRight,
   Plus,
   Trash2,
-  GripVertical,
 } from 'lucide-react';
 import { useI18n, t } from '../../i18n';
+import { InlineEdit } from '../shared/InlineEdit';
 
 interface CenterPanelProps {
   checklist: Checklist;
@@ -18,6 +18,8 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
   const {
     addSubsection,
     addTestCase,
+    updateSection,
+    updateSubsection,
     deleteSection,
     deleteSubsection,
     deleteTestCase,
@@ -95,8 +97,13 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                   <ChevronDown size={16} />
                 )}
               </button>
-              <GripVertical size={14} className="text-slate-700" />
-              <span className="font-medium text-white text-sm flex-1">{section.name}</span>
+              <InlineEdit
+                value={section.name}
+                onSave={(name) => updateSection(checklist.id, section.id, { name })}
+                title={t('dblClickToRename', locale)}
+                className="font-medium text-white text-sm flex-1"
+                inputClassName="font-medium text-sm flex-1"
+              />
               <button
                 onClick={() => {
                   const name = prompt(t('subsectionNamePrompt', locale));
@@ -139,7 +146,15 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                             <ChevronDown size={14} />
                           )}
                         </button>
-                        <span className="text-sm text-slate-300 flex-1">{sub.name}</span>
+                        <InlineEdit
+                          value={sub.name}
+                          onSave={(name) =>
+                            updateSubsection(checklist.id, section.id, sub.id, { name })
+                          }
+                          title={t('dblClickToRename', locale)}
+                          className="text-sm text-slate-300 flex-1"
+                          inputClassName="text-sm flex-1"
+                        />
                         <span className="text-xs text-slate-600">
                           {sub.testCases.length} {pluralCases(sub.testCases.length)}
                         </span>
@@ -173,7 +188,7 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                             <div
                               key={tc.id}
                               onClick={() => setSelectedItem(tc.id)}
-                              className={`flex items-center gap-3 px-3 py-2 my-0.5 rounded cursor-pointer text-sm transition-colors ${
+                              className={`group flex items-center gap-3 px-3 py-2 my-0.5 rounded cursor-pointer text-sm transition-colors ${
                                 selectedItemId === tc.id
                                   ? 'bg-indigo-600/20 border border-indigo-500/30'
                                   : 'hover:bg-slate-800/50 border border-transparent'
@@ -198,9 +213,12 @@ export function CenterPanel({ checklist }: CenterPanelProps) {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  deleteTestCase(checklist.id, section.id, sub.id, tc.id);
+                                  const name = tc.title || t('untitled', locale);
+                                  if (confirm(t('deleteTestCaseConfirm', locale, { name })))
+                                    deleteTestCase(checklist.id, section.id, sub.id, tc.id);
                                 }}
                                 className="p-1 hover:bg-slate-700 rounded text-slate-600 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                                title={t('deleteTestCase', locale)}
                               >
                                 <Trash2 size={12} />
                               </button>

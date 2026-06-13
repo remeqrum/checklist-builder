@@ -1,20 +1,15 @@
-import { useEffect } from 'react';
-import { useChecklistStore } from './store/checklistStore';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Dashboard } from './components/dashboard/Dashboard';
 import { Builder } from './components/builder/Builder';
 
 function App() {
-  const { activeChecklistId, loadFromStorage } = useChecklistStore();
-
-  useEffect(() => {
-    loadFromStorage();
-  }, [loadFromStorage]);
-
-  if (activeChecklistId) {
-    return <Builder />;
-  }
-
-  return <Dashboard />;
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/checklist/:id" element={<Builder />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }
 
 export default App;
