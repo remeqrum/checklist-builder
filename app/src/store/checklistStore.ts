@@ -13,6 +13,11 @@ import {
   createTestCase,
 } from '../utils/factories';
 import { blockToSection } from '../utils/blocks';
+import { t, useI18n } from '../i18n';
+import type { TranslationKey } from '../i18n';
+
+// names below end up in stored data, so resolve them in the current locale
+const tr = (key: TranslationKey) => t(key, useI18n.getState().locale);
 
 interface ChecklistStore {
   checklists: Checklist[];
@@ -113,7 +118,7 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
     const copy = createChecklist({
       ...original,
       id: undefined,
-      name: `${original.name} (copy)`,
+      name: `${original.name} ${tr('copySuffix')}`,
       createdAt: undefined,
       updatedAt: undefined,
     });
@@ -144,7 +149,7 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
   addSection: (checklistId: string, name?: string) => {
     const updated = updateAndSave(get().checklists, checklistId, (cl) => {
       const order = cl.sections.length;
-      const section = createSection({ name: name || 'New Section', order });
+      const section = createSection({ name: name || tr('newSection'), order });
       return { ...cl, sections: [...cl.sections, section] };
     });
     set({ checklists: updated });
@@ -187,7 +192,7 @@ export const useChecklistStore = create<ChecklistStore>((set, get) => ({
           ...s,
           subsections: [
             ...s.subsections,
-            createSubsection({ name: name || 'New Subsection', order }),
+            createSubsection({ name: name || tr('newSubsection'), order }),
           ],
         };
       }),

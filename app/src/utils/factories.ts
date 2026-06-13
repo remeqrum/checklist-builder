@@ -6,6 +6,11 @@ import type {
   Subsection,
   TestCase,
 } from '../types/checklist';
+import { t, useI18n } from '../i18n';
+import type { TranslationKey } from '../i18n';
+
+// default names are stored in user data, so resolve them in the current locale
+const tr = (key: TranslationKey) => t(key, useI18n.getState().locale);
 
 export function generateId(): string {
   return uuidv4();
@@ -39,7 +44,7 @@ export function createTestCase(overrides?: Partial<TestCase>): TestCase {
 export function createSubsection(overrides?: Partial<Subsection>): Subsection {
   return {
     id: generateId(),
-    name: 'New Subsection',
+    name: tr('newSubsection'),
     order: 0,
     testCases: [],
     ...overrides,
@@ -49,9 +54,9 @@ export function createSubsection(overrides?: Partial<Subsection>): Subsection {
 export function createSection(overrides?: Partial<Section>): Section {
   return {
     id: generateId(),
-    name: 'New Section',
+    name: tr('newSection'),
     order: 0,
-    subsections: [createSubsection({ name: 'Default' })],
+    subsections: [createSubsection({ name: tr('defaultSubsection') })],
     ...overrides,
   };
 }
@@ -60,7 +65,7 @@ export function createChecklist(overrides?: Partial<Checklist>): Checklist {
   const now = new Date().toISOString();
   return {
     id: generateId(),
-    name: 'Untitled Checklist',
+    name: tr('untitledChecklist'),
     author: '',
     createdAt: now,
     updatedAt: now,

@@ -243,6 +243,8 @@ export async function exportToExcel(checklist: Checklist) {
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-  const fileName = `${checklist.name.replace(/[^a-zA-Z0-9-_ ]/g, '')}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+  // keep letters in any script (Cyrillic, Slovak diacritics, …), drop only unsafe chars
+  const safeName = checklist.name.replace(/[^\p{L}\p{N}\-_ ]/gu, '').trim() || 'checklist';
+  const fileName = `${safeName}_${new Date().toISOString().slice(0, 10)}.xlsx`;
   saveAs(blob, fileName);
 }

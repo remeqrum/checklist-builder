@@ -319,6 +319,33 @@ const translations = {
     ru: 'Не указано',
     sk: 'Nenastavené',
   },
+
+  // ── Default entity names (stored at creation time) ──
+  newSection: {
+    en: 'New Section',
+    ru: 'Новая секция',
+    sk: 'Nová sekcia',
+  },
+  newSubsection: {
+    en: 'New Subsection',
+    ru: 'Новая подсекция',
+    sk: 'Nová podsekcia',
+  },
+  defaultSubsection: {
+    en: 'Default',
+    ru: 'Основная',
+    sk: 'Základná',
+  },
+  untitledChecklist: {
+    en: 'Untitled Checklist',
+    ru: 'Чек-лист без названия',
+    sk: 'Checklist bez názvu',
+  },
+  copySuffix: {
+    en: '(copy)',
+    ru: '(копия)',
+    sk: '(kópia)',
+  },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

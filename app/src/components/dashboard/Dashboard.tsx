@@ -71,7 +71,7 @@ export function Dashboard() {
                       )}{' '}
                       {t('testCases', locale)}
                     </span>
-                    <span>{t('updated', locale)} {new Date(cl.updatedAt).toLocaleDateString()}</span>
+                    <span>{t('updated', locale)} {new Date(cl.updatedAt).toLocaleDateString(locale)}</span>
                   </div>
                 </div>
 

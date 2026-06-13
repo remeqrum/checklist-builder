@@ -10,7 +10,9 @@ const getSavedLocale = (): Locale => {
   try {
     const saved = localStorage.getItem('tcb-locale');
     if (saved === 'en' || saved === 'ru' || saved === 'sk') return saved;
-  } catch {}
+  } catch {
+    // localStorage unavailable — fall back to browser language detection
+  }
 
   // Auto-detect from browser language
   const lang = navigator.language.toLowerCase();
@@ -19,10 +21,14 @@ const getSavedLocale = (): Locale => {
   return 'en';
 };
 
+const initialLocale = getSavedLocale();
+document.documentElement.lang = initialLocale;
+
 export const useI18n = create<I18nState>((set) => ({
-  locale: getSavedLocale(),
+  locale: initialLocale,
   setLocale: (locale) => {
     localStorage.setItem('tcb-locale', locale);
+    document.documentElement.lang = locale;
     set({ locale });
   },
 }));
